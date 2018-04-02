@@ -1,7 +1,6 @@
 
 # Chapter 9 ANOVA test 
 
-
 #problem 9-4 (five plant types, 21 ovservations  with alpha = 0.05
 #-----#Finding Critical Value from F-Distribution
 qf(0.95, 4,100)
@@ -9,16 +8,16 @@ qf(0.95, 4,100)
 pf(3.4, 4,100) -0.95
 # Ch.9 Working Example p.353 - 366
 #--- Data 
-ShapesDate <-as.data.frame(cbind(c(rep("T",4), rep("S", 4), rep("C",3)),  c(4,5,7,8,10:13,1:3)),stringsAsFactors = FALSE)
-ShapesDate[,2]<- as.numeric(ShapesDate[,2])
+ShapesData <-as.data.frame(cbind(c(rep("T",4), rep("S", 4), rep("C",3)),  c(4,5,7,8,10:13,1:3)),stringsAsFactors = FALSE)
+ShapesData[,2]<- as.numeric(ShapesData[,2])
 
 # Point Xij p.359
-x24 <- ShapesDate[8,2]
+x24 <- ShapesData[8,2]
 # Mean of group Squares
-Xs<- mean(ShapesDate[which(ShapesDate$V1 =='S'),2])
+Xs<- mean(ShapesData[which(ShapesData$V1 =='S'),2])
 
 # Mean of all points 
-Xt <- mean(ShapesDate$V2)
+Xt <- mean(ShapesData$V2)
 
 #------ Calculating Deviation for point X_24
 #Total deviation 
@@ -42,12 +41,22 @@ e <- x24 - Xs
  t^2 + e^2 == (Xs - Xt)^2 + (x24 - Xs)^2 # this is not 
  t^2 + e^2 == Tot^2 # as same as this 
 
- # The sum of sequares is true 
- attach(ShapesDate)
- sapply(V1~V2, FUN = sum)
- #Using Statistics 9-1 
+ # The sum of sequares is true
+ attach(ShapesData)
 
-summary(aov(V2~V1 , data=ShapesDate))
+tb_shapes <- tibble::tribble(
+~Triangle, ~Square, ~Circle,
+4, 10,1,
+5,11,2,
+7,12,3,
+8,13,NA
+ )
+
+ SSE <-sum((t(tb_shapes)-colMeans(tb_shapes,na.rm = TRUE))^2,na.rm = T)
+
+#Using Statistics 9-1
+
+summary(aov(V2~V1 , data=ShapesData))
 
 useStat9.1 <- read.csv("CH9_CASE11.csv", header = TRUE)
 
