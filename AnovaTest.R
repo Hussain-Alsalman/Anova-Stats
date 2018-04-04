@@ -71,11 +71,40 @@ df.treatment <- dim(tb_shapes)[2] - 1
 df.error <- sum(Ns) - dim(tb_shapes)[2]
 df.total <- df.treatment + df.error
 
-SSTR / df.treatment
-SSE / df.error
-#Using Statistics 9-1
-summary(aov(V2~V1 , data=ShapesData))
+# Mean of Squares 
+MSTR <- SSTR / df.treatment
+MSE <- SSE / df.error
 
+#F-Distribution 
+#Test statistics for our data 
+F.df_tr.df_er <- MSTR/MSE
+
+#Critical value from F-Distribution with Alph = 0.01
+Critic.val <-qf(0.99,df.treatment, df.error)
+
+#Reject the null Hypothesis if Test Statistics is GREATER than Critical Value 
+F.df_tr.df_er > Critic.val
+# TRUE
+
+###Then We reject the Null Hypothesis 
+
+#Short-cut for all steps 
+summary(aov(V2~V1 , data=ShapesData))
+#-----------------Exercises-----------------------
+model.matrix(Prototype.A ~ Prototype.B ~ Prototype.C,data =P18.dat)
+aov(Prototype.A ~ Prototype.B ~ Prototype.C,data =P18.dat)
+#Reading in the data 
+P18.dat <-read.csv(file = "Ch9_P18.csv", header = TRUE)
+
+#Changing Data from wide format to long format 
+P18.dat.w <-stack(P18.dat, select =c(Prototype.A,Prototype.B,Prototype.C))
+#Fixing the Column names
+colnames(P18.dat.w) <- c("miles", "plan.type")
+
+# Conducting the ANOVA Test on the data 
+summary(aov(miles~plan.type, data = P18.dat.w))
+
+#The
 useStat9.1 <- read.csv("CH9_CASE11.csv", header = TRUE)
 
 
