@@ -91,8 +91,6 @@ F.df_tr.df_er > Critic.val
 #Short-cut for all steps 
 summary(aov(V2~V1 , data=ShapesData))
 #-----------------Exercises-----------------------
-model.matrix(Prototype.A ~ Prototype.B ~ Prototype.C,data =P18.dat)
-aov(Prototype.A ~ Prototype.B ~ Prototype.C,data =P18.dat)
 #Reading in the data 
 P18.dat <-read.csv(file = "Ch9_P18.csv", header = TRUE)
 
