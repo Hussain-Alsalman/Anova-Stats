@@ -25,7 +25,7 @@ Tot <- x24 - Xt
 
 #Treatment Deviation 
 t <- Xs - Xt
-
+t
 #Error Deviation 
 e <- x24 - Xs
 # Deviation formula is  Tot = t + e 
@@ -51,11 +51,29 @@ tb_shapes <- tibble::tribble(
 7,12,3,
 8,13,NA
  )
+#Calculating the total Mean, Sample Size for each group and Mean for each group
 
- SSE <-sum((t(tb_shapes)-colMeans(tb_shapes,na.rm = TRUE))^2,na.rm = T)
+x_dbar <- mean(t(tb_shapes), na.rm = TRUE) #total Mean
+Ns <-apply(tb_shapes, 2, function(x) sum(!is.na(x))) #Sample Size for each group
+means_i <-colMeans(tb_shapes,na.rm = TRUE) #Sample Size for each group
 
+SSE <- sum((t(tb_shapes)-means_i)^2,na.rm = T)
+SSTR <- sum(t(Ns*t((means_i- x_dbar))^2))
+
+SST <- SSTR + SSE
+
+# Degrees of freedom :
+#Df(treatment) = r -1
+#Df (error) = n - r
+#Df(total = df(treatment) + df(error)
+
+df.treatment <- dim(tb_shapes)[2] - 1
+df.error <- sum(Ns) - dim(tb_shapes)[2]
+df.total <- df.treatment + df.error
+
+SSTR / df.treatment
+SSE / df.error
 #Using Statistics 9-1
-
 summary(aov(V2~V1 , data=ShapesData))
 
 useStat9.1 <- read.csv("CH9_CASE11.csv", header = TRUE)
