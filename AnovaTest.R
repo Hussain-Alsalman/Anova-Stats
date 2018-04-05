@@ -91,25 +91,41 @@ F.df_tr.df_er > Critic.val
 #Short-cut for all steps 
 summary(aov(V2~V1 , data=ShapesData))
 #-----------------Exercises-----------------------
-#Reading in the data 
+#------Problem 9-18
+#...Reading in the data
 P18.dat <-read.csv(file = "Ch9_P18.csv", header = TRUE)
 
-#Changing Data from wide format to long format 
+#...Changing Data from wide format to long format
 P18.dat.w <-stack(P18.dat, select =c(Prototype.A,Prototype.B,Prototype.C))
-#Fixing the Column names
+#...Fixing the Column names
 colnames(P18.dat.w) <- c("miles", "plan.type")
 
-# Conducting the ANOVA Test on the data 
-summary(aov(miles~plan.type, data = P18.dat.w))
+#...Conducting the ANOVA Test on the data
+res.P18<- aov(miles~plan.type, data = P18.dat.w)
+summary(res.P18)
+#...Reject the null Hypothesis if Test Statistics is GREATER than Critical Value
+Critic.val.P18 <-qf(.95,2,27)
+#...Extracting F-test value
+F.test.P18<-summary(res.P18)[[1]]["F value"][[1]][1]
+F.test.P18 > Critic.val.P18
+#...TRUE
+#...Reject Null Hypothesis
 
-#The
-useStat9.1 <- read.csv("CH9_CASE11.csv", header = TRUE)
+#------Problem 9-19
+#...Reading in the data
+P19.dat <-read.csv(file = "Ch9_P19.csv", header = TRUE)
+#...Changing Data from wide format to long format
+P19.dat.w <-stack(P19.dat, select =c(U.K., Mexico, U.A.E., Oman))
+#...Fixing the Column names
+colnames(P19.dat.w) <- c("prices", "countries")
+#...Conducting the ANOVA Test on the data
+res.P19 <-aov(prices~countries, data = P19.dat.w)
+summary(res.P19)
 
-
-#Example 9-1 
-
-exm9.1 <- read.csv("CH9_CASE12.csv", header = TRUE)
-
-#tell where the data come from
-datafilename="http://personality-project.org/R/datasets/R.appendix1.data"
-data.ex1=read.table(datafilename,header=T) 
+#...Reject the null Hypothesis if Test Statistics is GREATER than Critical Value
+Critic.val.P19 <-qf(.95,3,28)
+#...Extracting F-test value
+F.test.P19<-summary(res.P19)[[1]]["F value"][[1]][1]
+F.test.P19 > Critic.val.P19
+#...TRUE
+#...Reject Null Hypothesis
