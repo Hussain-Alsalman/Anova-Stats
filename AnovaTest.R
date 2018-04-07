@@ -129,3 +129,22 @@ F.test.P19<-summary(res.P19)[[1]]["F value"][[1]][1]
 F.test.P19 > Critic.val.P19
 #...TRUE
 #...Reject Null Hypothesis
+
+#------Problem 9-21
+#...Reading in the data
+P21.dat <-read.csv(file = "Ch9_P21.csv", header = TRUE)
+#...Changing Data from wide format to long format
+P21.dat.w <-stack(P21.dat, select =c(High, Medium, Low))
+#...Fixing the Column names
+colnames(P21.dat.w) <- c("months", "performance")
+#...Conducting the ANOVA Test on the data
+res.P21 <-aov(months~performance, data = P21.dat.w)
+summary(res.P21)
+lattice::intervals(res.P21)
+#...Reject the null Hypothesis if Test Statistics is GREATER than Critical Value
+Critic.val.P21 <-qf(.95,2,38)
+#...Extracting F-test value
+F.test.P21<-summary(res.P21)[[1]]["F value"][[1]][1]
+F.test.P21 > Critic.val.P21
+#...TRUE
+#...Reject Null Hypothesis
